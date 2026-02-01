@@ -1,0 +1,221 @@
+import React, { useState, useEffect } from 'react';
+import { Heart, Flower } from 'lucide-react';
+
+const App = () => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [catEmoji, setCatEmoji] = useState('😼'); // neutral male cat
+  const [noIsNowYes, setNoIsNowYes] = useState(false);
+  const [accepted, setAccepted] = useState(false);
+
+  // Show popup after 6 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleNoHover = () => {
+    setNoIsNowYes(true);
+    setCatEmoji('😽'); // shy/blushing cat
+  };
+
+  const handleYesHover = () => setCatEmoji('😻'); // love eyes cat
+  
+  const handleMouseLeave = () => {
+    if (!accepted) {
+      setCatEmoji('😼');
+      setNoIsNowYes(false); 
+    }
+  };
+  
+  const handleYesClick = () => {
+    setAccepted(true);
+    setCatEmoji('😻');
+  };
+
+  return (
+    <div className={`relative min-h-screen w-full transition-colors duration-1000 overflow-hidden font-sans ${accepted ? 'bg-black' : 'bg-[#fff5f7]'}`}>
+      
+      {/* High-End Soft Background Layer */}
+      <div className={`absolute inset-0 z-0 transition-opacity duration-1000 ${accepted ? 'opacity-20' : 'opacity-100'}`}>
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-pink-50 to-pink-100" />
+        
+        {/* Floating Decorative Elements */}
+        <div className="absolute inset-0 pointer-events-none">
+            {[...Array(15)].map((_, i) => (
+                <div 
+                    key={i} 
+                    className="absolute animate-float opacity-30"
+                    style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        animationDelay: `${i * 0.7}s`,
+                        animationDuration: `${10 + Math.random() * 10}s`
+                    }}
+                >
+                    {i % 2 === 0 ? (
+                      <Heart size={Math.random() * 40 + 20} className="text-pink-300 fill-pink-200" />
+                    ) : (
+                      <Flower size={Math.random() * 40 + 20} className="text-rose-300" />
+                    )}
+                </div>
+            ))}
+        </div>
+
+        {/* Soft Rose Overlay */}
+        <div className="absolute bottom-0 w-full h-1/2 opacity-20 pointer-events-none flex justify-around items-end pb-10">
+           <Flower size={120} className="text-rose-400 rotate-12" />
+           <Flower size={80} className="text-pink-400 -rotate-12" />
+           <Flower size={150} className="text-rose-500 rotate-45" />
+        </div>
+      </div>
+
+      {/* Hero Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-6">
+        {!showPopup && (
+          <div className="animate-fade-in space-y-4 max-w-5xl mx-auto flex flex-col items-center">
+            <h1 className="font-black tracking-tighter uppercase leading-tight text-center w-full">
+              <span className="text-2xl md:text-4xl lg:text-4xl block mb-2" style={{ color: 'rgba(245, 40, 145, 0.8)' }}>
+                Dear,
+              </span>
+              <span className="text-5xl md:text-8xl lg:text-9xl text-rose-600 drop-shadow-md block py-12 scale-110">
+                Pretty Lady...
+              </span>
+            </h1>
+            <p className="text-lg md:text-2xl text-pink-400 font-light tracking-[0.3em] uppercase animate-pulse text-center pt-8">
+              Please wait a moment
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Proposal Popup */}
+      {showPopup && (
+        <div className={`fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md transition-all duration-1000 ${accepted ? 'bg-black/90' : 'bg-white/20'}`}>
+          <div 
+            className={`relative rounded-[3rem] p-8 md:p-12 max-w-2xl w-full mx-4 text-center transition-all duration-1000 overflow-hidden ${
+              accepted 
+              ? 'bg-transparent shadow-none border-transparent' 
+              : 'bg-white shadow-[0_20px_100px_rgba(255,182,193,0.6)] border-4 border-pink-50'
+            }`}
+          >
+            {/* Pink top accent - hide on accept */}
+            {!accepted && <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-200 via-rose-400 to-pink-200" />}
+            
+            {accepted ? (
+              <div className="animate-in fade-in duration-1000 flex flex-col items-center justify-center h-full py-6">
+                {/* Romantic Meeting Animation */}
+                <div className="relative flex items-center justify-center gap-4 md:gap-12 mb-12 h-40 w-full">
+                  {/* Male Cat */}
+                  <div className="text-7xl md:text-9xl animate-meet-left">
+                    {catEmoji}
+                  </div>
+                  {/* Hearts Burst */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <Heart className="text-rose-500 fill-rose-500 animate-ping opacity-75" size={100} />
+                  </div>
+                  {/* Female Cat */}
+                  <div className="text-7xl md:text-9xl animate-meet-right">
+                    😽
+                  </div>
+                </div>
+
+                <div className="z-10 w-full">
+                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-rose-500 mb-6 tracking-tighter drop-shadow-[0_0_20px_rgba(244,114,182,0.8)] whitespace-nowrap text-center">
+                    DESTINY SEALED! ❤️
+                  </h2>
+                  <p className="text-pink-200 font-medium tracking-widest uppercase text-base md:text-lg animate-pulse">See you on the Feb 14th!</p>
+                  <div className="flex mt-12 justify-center gap-8">
+                     <Heart className="text-rose-500 fill-rose-500 animate-bounce" size={48} />
+                     <Flower className="text-pink-400 animate-spin-slow" size={48} />
+                     <Heart className="text-rose-500 fill-rose-500 animate-bounce delay-150" size={48} />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col h-full relative items-center">
+                {/* Cat Emoji display */}
+                <div className="text-9xl mb-8 drop-shadow-lg transition-all duration-300 transform hover:scale-110">
+                  {catEmoji}
+                </div>
+
+                <h2 className="text-3xl font-black text-gray-800 mb-10 leading-tight tracking-tight text-center">
+                  Will You Be the <br/> 
+                  <span className="text-rose-600">Favorite Chapter of My Life?</span>
+                </h2>
+                
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-6 w-full">
+                  {/* Original YES */}
+                  <button
+                    onClick={handleYesClick}
+                    onMouseEnter={handleYesHover}
+                    onMouseLeave={handleMouseLeave}
+                    className="z-20 bg-gradient-to-br from-rose-500 to-pink-600 text-white font-black py-4 px-10 rounded-2xl shadow-lg hover:shadow-rose-400/40 transform hover:scale-110 active:scale-95 transition-all duration-300 w-40"
+                  >
+                    YES!
+                  </button>
+                  
+                  {/* The Resetting "No" button */}
+                  <button
+                    onMouseEnter={handleNoHover}
+                    onMouseLeave={handleMouseLeave}
+                    onClick={handleYesClick}
+                    className={`transition-all duration-300 py-4 px-10 rounded-2xl font-black w-40 transform border-2 ${
+                      noIsNowYes 
+                      ? 'bg-gradient-to-br from-pink-400 to-rose-500 text-white border-pink-300 shadow-lg scale-110' 
+                      : 'bg-white text-gray-400 border-gray-100'
+                    }`}
+                  >
+                    {noIsNowYes ? 'YES!' : 'No'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(40px); filter: blur(10px); }
+          to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes float {
+          0% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(10deg); }
+          100% { transform: translateY(0) rotate(0deg); }
+        }
+        .animate-float {
+          animation: float linear infinite;
+        }
+        .animate-spin-slow {
+          animation: spin 10s linear infinite;
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes meet-left {
+          0% { transform: translateX(-120px); opacity: 0; }
+          100% { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes meet-right {
+          0% { transform: translateX(120px); opacity: 0; }
+          100% { transform: translateX(0); opacity: 1; }
+        }
+        .animate-meet-left {
+          animation: meet-left 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .animate-meet-right {
+          animation: meet-right 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+      `}} />
+    </div>
+  );
+};
+
+export default App;
