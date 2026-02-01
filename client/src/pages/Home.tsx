@@ -22,7 +22,7 @@ export default function Home() {
 
   const handleYesClick = () => {
     setStage("success");
-    saveResponse({ accepted: true, visitorName: "Anonymous Love" });
+    // saveResponse({ accepted: true, visitorName: "Anonymous Love" }); // Removed DB connectivity
     
     // Fire confetti
     const duration = 3000;
@@ -199,7 +199,7 @@ export default function Home() {
                 <p className="text-xl md:text-2xl font-body text-foreground mb-8">
                   Best decision you've made today! <br/>
                   <span className="text-muted-foreground text-lg block mt-2">
-                    (No take backs, it's in the database now 😉)
+                    (No take backs 😉)
                   </span>
                 </p>
 
@@ -216,7 +216,7 @@ export default function Home() {
       </div>
 
       <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-muted-foreground/50 font-mono pointer-events-none">
-        Made with ❤️ using React & Framer Motion
+        Made for fun by Neelesh
       </div>
     </div>
   );
